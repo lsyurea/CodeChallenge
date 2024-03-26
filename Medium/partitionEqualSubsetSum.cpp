@@ -24,7 +24,7 @@ public:
         vector<int> total = vector(sum + 1, 0);
         total[0] = 1;
         for (int i = 1; i < len_nums; i++) {
-            // must reverse
+            // does not need to reverse
             for (int j = sum; j >= 0; j--) {
                 if (j >= nums[i - 1]) {
                     total[j] = max(total[j - nums[i - 1]], total[j]);
