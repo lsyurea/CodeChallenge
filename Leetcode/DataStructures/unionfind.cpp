@@ -22,6 +22,7 @@ public:
         // set the smaller tree root to be the larger tree
         if (rank[rX] > rank[rY])
             root[rY] = rX;
+        else root[rX] = rY;
         if (rank[rX] == rank[rY])
             rank[rY]++;
     }
