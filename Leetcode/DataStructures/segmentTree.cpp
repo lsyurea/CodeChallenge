@@ -1,41 +1,30 @@
 class SegTree {
 public:
-    vector<long long> tree;
-    int seg_tree_size, base_size;
+    int N = 0;
+    vector<int> st;
 
     void init(vector<int>& a) {
-        base_size = 1;
-        while (base_size < a.size())
-            base_size *= 2;
-        seg_tree_size = 2 * base_size - 1;
-        tree.resize(seg_tree_size, 0);
-        for (int i = seg_size / 2, j = 0; j < a.size() && i < seg_size; i++, j++)
-            tree[i] = a[j];
-        for (int i = seg_size / 2 - 1; i >= 0; i--)
-            tree[i] = tree[2 * i + 1] + tree[2 * i + 2];
+        N = a.size();
+        st.resize(2 * N + 1);
+        for (int i = 0; i < N; i++) 
+            st[N + i] = a[i];
+        for (int i = N - 1; i > 0; i--) 
+            st[i] = st[i << 1] + st[(i << 1) + 1];
     }
 
     void update(int idx, int val) {
-        idx += seg_size / 2;
-        tree[idx] = val;
-        while (idx > 0) {
-            // start updating from the parent node
-            idx = (idx - 1) / 2;
-            tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
+        idx += N;
+        st[idx] = val;
+        for (idx >>= 1; idx > 0; idx >>= 1) 
+            st[idx] = st[idx << 1] + st[(idx << 1) + 1];
+    }
+
+    int query(int l, int r) {
+        int res = 0;
+        for (l += N, r += N; l <= r; l >>= 1, r >>= 1) {
+            if (l & 1) res += st[l++];
+            if (!(r & 1)) res += st[r--];
         }
-    }
-
-    long long sum(int l, int r) {
-        return sum(l, r, 0, base_size, 0);
-    }
-
-
-    long long sum(int l, int r, int start, int end, int node) {
-        if (start >= r || end <= l)
-            return 0;
-        if (start >= l && end <= r)
-            return tree[node];
-        int mid = start + (end - start) / 2;
-        return sum(l, r, start, mid, 2 * node + 1) + sum(l, r, mid, end, 2 * node + 2);
+        return res;
     }
 };
