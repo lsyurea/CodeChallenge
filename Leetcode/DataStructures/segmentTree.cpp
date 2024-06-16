@@ -9,7 +9,7 @@ public:
             base_size *= 2;
         seg_tree_size = 2 * base_size - 1;
         tree.resize(seg_tree_size, 0);
-        for (int i = base_size; j = 0; j < a.size(); i++, j++)
+        for (int i = base_size, j = 0; j < a.size() && i < seg_size; i++, j++)
             tree[i] = a[j];
         for (int i = base_size - 1; i >= 0; i--)
             tree[i] = tree[2 * i + 1] + tree[2 * i + 2];
