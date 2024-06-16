@@ -1,60 +1,41 @@
-class segtree {
+class SegTree {
 public:
-    int size;
-    vector<int> sums;
-    
-    void init(int n){
-        size = 1;
-        while (size < n)
-            size *= 2;
-        sums.assign(2 * size, 0);
+    vector<long long> tree;
+    int seg_tree_size, base_size;
+
+    void init(vector<int>& a) {
+        base_size = 1;
+        while (base_size < a.size())
+            base_size *= 2;
+        seg_tree_size = 2 * base_size - 1;
+        tree.resize(seg_tree_size, 0);
+        for (int i = base_size; j = 0; j < a.size(); i++, j++)
+            tree[i] = a[j];
+        for (int i = base_size - 1; i >= 0; i--)
+            tree[i] = tree[2 * i + 1] + tree[2 * i + 2];
     }
-    
-    void build(vector<int> &a, int x, int lx, int rx){
-        if (rx - lx == 1){
-            if (lx < (int) a.size())
-                sums[x] = a[lx];
-            return;
+
+    void update(int idx, int val) {
+        idx += base_size;
+        tree[idx] = val;
+        while (idx > 0) {
+            // start updating from the parent node
+            idx = (idx - 1) / 2;
+            tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
         }
-        
-        int m = (lx + rx) / 2;
-        build(a, 2 * x + 1, lx, m);
-        build(a, 2 * x + 2, m, rx);
-        sums[x] = sums[2 * x + 1] + sums[2 * x + 2];
-    }    
-    void build(vector<int> &a){
-        build(a, 0, 0, size);
     }
-    
-    void set(int i, int v, int x, int lx, int rx){
-        if (rx - lx == 1){
-            sums[x] = v;
-            return;
-        }
-        
-        int m = (lx + rx) / 2;
-        if (i < m)
-            set(i, v, 2 * x + 1, lx, m);
-        else
-            set(i, v, 2 * x + 2, m, rx);
-        sums[x] = sums[2 * x + 1] + sums[2 * x + 2];
+
+    long long sum(int l, int r) {
+        return sum(l, r, 0, base_size, 0);
     }
-    void set(int i, int v){
-        set(i, v, 0, 0, size);
-    }
-    
-    int sum(int l, int r, int x, int lx, int rx){
-        if (lx >= r || rx <= l)
+
+
+    long long sum(int l, int r, int start, int end, int node) {
+        if (start >= r || end <= l)
             return 0;
-        else if (lx >= l && rx <= r)
-            return sums[x];
-        
-        int m = (lx + rx) / 2;
-        int s1 = sum(l, r, 2 * x + 1, lx, m);
-        int s2 = sum(l, r, 2 * x + 2, m, rx);
-        return s1 + s2;
-    }
-    int sum(int l, int r){
-        return sum(l, r, 0, 0, size);
+        if (start >= l && end <= r)
+            return tree[node];
+        int mid = start + (end - start) / 2;
+        return sum(l, r, start, mid, 2 * node + 1) + sum(l, r, mid, end, 2 * node + 2);
     }
 };
