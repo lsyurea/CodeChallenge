@@ -19,6 +19,7 @@ public:
             st[idx] = st[idx << 1] + st[(idx << 1) + 1];
     }
 
+    // query is [l, r]
     int query(int l, int r) {
         int res = 0;
         for (l += N, r += N; l <= r; l >>= 1, r >>= 1) {
