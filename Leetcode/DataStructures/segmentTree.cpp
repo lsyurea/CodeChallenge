@@ -5,7 +5,7 @@ public:
 
     void init(vector<int>& a) {
         N = a.size();
-        st.resize(2 * N + 1);
+        st.resize(2 * N);
         for (int i = 0; i < N; i++) 
             st[N + i] = a[i];
         for (int i = N - 1; i > 0; i--) 
