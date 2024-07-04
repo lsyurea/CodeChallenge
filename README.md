@@ -6,9 +6,7 @@ A compilation of coding problems that I came across
 
 ### Profile
 
-  <a href="https://leetcode.com/lsy_urea">
-    <img src="https://leetcode-stats-six.vercel.app/?username=lsy_urea&theme=dark" />
-  </a>
+![LeetCode Stats](https://leetcard.jacoblin.cool/lsy_urea?theme=dark&font=Ropa%20Sans)
 
 
 ## HackerRank
